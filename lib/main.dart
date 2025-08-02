@@ -6,57 +6,127 @@ void main() {
   ));
 }
 
-class mainpage extends StatelessWidget {
+class mainpage extends StatefulWidget {
   const mainpage({super.key});
+
+  @override
+  State<mainpage> createState() => _mainpageState();
+}
+
+class _mainpageState extends State<mainpage> {
+  int _selectedIndex = 0;
+
+  // Pages for each bottom nav tab
+  List<Widget> _pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
+      homeContent(context),
+      settingsContent(),
+    ];
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        title: const Text(
+          "FingerLinger",
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.black,
+        selectedItemColor: Colors.orange,
+        unselectedItemColor: Colors.white70,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget homeContent(BuildContext context) {
+    return SafeArea(
+      child: Column(
         children: [
-          Container(
-            color: const Color.fromARGB(255, 230, 85, 7),
-            height: MediaQuery.of(context).size.height / 2,
-            width: double.infinity,
-            child: Center(
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => gamepage()));
-                },
-                color: Colors.white24,
-                height: 150,
-                minWidth: 150,
-                shape: const CircleBorder(),
-                child: const Text(
-                  "Start",
-                  style: TextStyle(color: Colors.white),
+          Expanded(
+            child: Container(
+              color: const Color.fromARGB(255, 230, 85, 7),
+              width: double.infinity,
+              child: Center(
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => gamepage()));
+                  },
+                  color: Colors.white24,
+                  height: 150,
+                  minWidth: 150,
+                  shape: const CircleBorder(),
+                  child: const Text(
+                    "Start",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
           ),
-          Container(
-            color: const Color.fromARGB(255, 210, 206, 206),
-            height: MediaQuery.of(context).size.height / 2,
-            width: double.infinity,
-            child: Center(
-              child: MaterialButton(
-                onPressed: () {
-                  Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => gamepage()));
-                },
-                color: Colors.white24,
-                height: 150,
-                minWidth: 150,
-                shape: const CircleBorder(),
-                child: const Text(
-                  "Start",
-                  style: TextStyle(color: Colors.white),
+          Expanded(
+            child: Container(
+              color: const Color.fromARGB(255, 210, 206, 206),
+              width: double.infinity,
+              child: Center(
+                child: MaterialButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => gamepage()));
+                  },
+                  color: Colors.white24,
+                  height: 150,
+                  minWidth: 150,
+                  shape: const CircleBorder(),
+                  child: const Text(
+                    "Start",
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget settingsContent() {
+    return const Center(
+      child: Text(
+        "Settings Page",
+        style: TextStyle(fontSize: 24),
       ),
     );
   }
@@ -104,7 +174,8 @@ class _gamepageState extends State<gamepage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => respage(sca, "Player A Won!")));
+                        builder: (context) =>
+                            respage(sca, "Player A Won!")));
               }
             },
             padding: EdgeInsets.zero,
@@ -150,7 +221,8 @@ class _gamepageState extends State<gamepage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => respage(scb, "Player B Won !")));
+                        builder: (context) =>
+                            respage(scb, "Player B Won !")));
               }
             },
             padding: EdgeInsets.zero,
@@ -199,9 +271,9 @@ class respage extends StatelessWidget {
     // Set background color based on player
     Color bgColor;
     if (player == "Player A Won!") {
-      bgColor = const Color.fromARGB(255, 230, 85, 7); 
+      bgColor = const Color.fromARGB(255, 230, 85, 7);
     } else if (player == "Player B Won !") {
-      bgColor = const Color.fromARGB(255, 210, 206, 206); 
+      bgColor = const Color.fromARGB(255, 210, 206, 206);
     } else {
       bgColor = Colors.blueGrey;
     }
@@ -209,7 +281,7 @@ class respage extends StatelessWidget {
     return Scaffold(
       backgroundColor: bgColor,
       body: Center(
-        child: SingleChildScrollView( // 👈 Prevents overflow
+        child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -226,8 +298,8 @@ class respage extends StatelessWidget {
               const SizedBox(height: 20),
               MaterialButton(
                 onPressed: () {
-                  Navigator.pop(context); // back to game
-                  Navigator.pop(context); // back to main
+                  Navigator.pop(context); 
+                  Navigator.pop(context); 
                 },
                 color: Colors.white,
                 padding: const EdgeInsets.all(10),
