@@ -2,31 +2,25 @@ import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
-    home: mainpage(),
+    debugShowCheckedModeBanner: false,
+    home: MainPage(),
   ));
 }
 
-class mainpage extends StatefulWidget {
-  const mainpage({super.key});
+class MainPage extends StatefulWidget {
+  const MainPage({super.key});
 
   @override
-  State<mainpage> createState() => _mainpageState();
+  State<MainPage> createState() => _MainPageState();
 }
 
-class _mainpageState extends State<mainpage> {
+class _MainPageState extends State<MainPage> {
   int _selectedIndex = 0;
 
-  // Pages for each bottom nav tab
-  List<Widget> _pages = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _pages = [
-      homeContent(context),
-      settingsContent(),
-    ];
-  }
+  final List<Widget> _pages = [
+    const HomeContent(),
+    const SettingsContent(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -64,8 +58,13 @@ class _mainpageState extends State<mainpage> {
       ),
     );
   }
+}
 
-  Widget homeContent(BuildContext context) {
+class HomeContent extends StatelessWidget {
+  const HomeContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
       child: Column(
         children: [
@@ -79,7 +78,7 @@ class _mainpageState extends State<mainpage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => gamepage()));
+                            builder: (context) => const GamePage()));
                   },
                   color: Colors.white24,
                   height: 150,
@@ -103,7 +102,7 @@ class _mainpageState extends State<mainpage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => gamepage()));
+                            builder: (context) => const GamePage()));
                   },
                   color: Colors.white24,
                   height: 150,
@@ -121,8 +120,13 @@ class _mainpageState extends State<mainpage> {
       ),
     );
   }
+}
 
-  Widget settingsContent() {
+class SettingsContent extends StatelessWidget {
+  const SettingsContent({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     return const Center(
       child: Text(
         "Settings Page",
@@ -132,28 +136,26 @@ class _mainpageState extends State<mainpage> {
   }
 }
 
-class gamepage extends StatefulWidget {
-  const gamepage({super.key});
+class GamePage extends StatefulWidget {
+  const GamePage({super.key});
 
   @override
-  State<gamepage> createState() => _gamepageState();
+  State<GamePage> createState() => _GamePageState();
 }
 
-class _gamepageState extends State<gamepage> {
+class _GamePageState extends State<GamePage> {
   double orangech = 0;
   double greych = 0;
-
-  bool intialized = false;
-
+  bool initialized = false;
   int sca = 0;
   int scb = 0;
 
   @override
   Widget build(BuildContext context) {
-    if (intialized == false) {
+    if (!initialized) {
       orangech = MediaQuery.of(context).size.height / 2;
       greych = MediaQuery.of(context).size.height / 2;
-      intialized = true;
+      initialized = true;
     }
 
     return Scaffold(
@@ -175,7 +177,7 @@ class _gamepageState extends State<gamepage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            respage(sca, "Player A Won!")));
+                            ResultPage(sca, "Player A Won!")));
               }
             },
             padding: EdgeInsets.zero,
@@ -222,7 +224,7 @@ class _gamepageState extends State<gamepage> {
                     context,
                     MaterialPageRoute(
                         builder: (context) =>
-                            respage(scb, "Player B Won !")));
+                            ResultPage(scb, "Player B Won !")));
               }
             },
             padding: EdgeInsets.zero,
@@ -260,15 +262,14 @@ class _gamepageState extends State<gamepage> {
   }
 }
 
-class respage extends StatelessWidget {
+class ResultPage extends StatelessWidget {
   final int score;
   final String player;
 
-  const respage(this.score, this.player, {super.key});
+  const ResultPage(this.score, this.player, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    // Set background color based on player
     Color bgColor;
     if (player == "Player A Won!") {
       bgColor = const Color.fromARGB(255, 230, 85, 7);
@@ -298,8 +299,8 @@ class respage extends StatelessWidget {
               const SizedBox(height: 20),
               MaterialButton(
                 onPressed: () {
-                  Navigator.pop(context); 
-                  Navigator.pop(context); 
+                  Navigator.pop(context);
+                  Navigator.pop(context);
                 },
                 color: Colors.white,
                 padding: const EdgeInsets.all(10),
